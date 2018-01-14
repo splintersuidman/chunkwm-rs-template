@@ -1,9 +1,8 @@
 //! # ChunkWM plugin template in Rust
 //! This template allows you to easily create plugins in Rust that use the ChunkWM events.
 //!
-//! This site only shows you the documentation on the Rust plugin structure, and not the
-//! installation instructions. To see those, visit the
-//! [README on GitHub](https://github.com/splintah/chunkwm-rust-template).
+//! To see the installation instructions, visit the
+//! [README on GitHub](https://github.com/splintah/chunkwm-rs-template).
 
 #[macro_use]
 extern crate chunkwm;
