@@ -1,0 +1,12 @@
+[package]
+name = "template"
+version = "0.1.0"
+authors = ["Your Name"]
+
+[lib]
+name = "template"
+path = "./src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+chunkwm = { git = "https://github.com/splintah/chunkwm-rs" }
