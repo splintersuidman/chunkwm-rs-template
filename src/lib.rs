@@ -1,8 +1,8 @@
-//! # ChunkWM plugin template in Rust
-//! This template allows you to easily create plugins in Rust that use the ChunkWM events.
-//!
-//! To see the installation instructions, visit the
-//! [README on GitHub](https://github.com/splintah/chunkwm-rs-template).
+// # ChunkWM plugin template in Rust
+// This template allows you to easily create plugins in Rust that use the ChunkWM events.
+//
+// To see the installation instructions, visit the
+// [README on GitHub](https://github.com/splintah/chunkwm-rs-template).
 
 #[macro_use]
 extern crate chunkwm;
@@ -23,8 +23,8 @@ impl HandleEvent for Plugin {
     fn new(api: &'static API) -> Plugin {
         println!("Rust template: Starting up...");
         // Add two CVars.
-        let preselect_border_width = CVar::new("preselect_border_width", &api).unwrap();
-        let global_desktop_mode = CVar::new("global_desktop_mode", &api).unwrap();
+        let preselect_border_width = CVar::new("preselect_border_width", api).unwrap();
+        let global_desktop_mode = CVar::new("global_desktop_mode", api).unwrap();
         Plugin {
             preselect_border_width,
             global_desktop_mode,
