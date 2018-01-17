@@ -1,9 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../../api/plugin_api.h"
-#include "../../../common/accessibility/application.h"
-#include "../../../common/accessibility/window.h"
+/* #include "../../../api/plugin_api.h"
+ * #include "../../../common/accessibility/application.h"
+ * #include "../../../common/accessibility/window.h" */
+#include "../chunkwm/src/api/plugin_api.h"
+#include "../chunkwm/src/common/accessibility/application.h"
+#include "../chunkwm/src/common/accessibility/window.h"
 
 #include "./rust.h"
 
