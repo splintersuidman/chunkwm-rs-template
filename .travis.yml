@@ -1,0 +1,16 @@
+language: rust
+os: osx
+cache: cargo
+osx_image: xcode8.3
+
+rust:
+- stable
+- beta
+- nightly
+
+matrix:
+  allow_failures:
+  - rust: nightly
+
+script:
+- make install
