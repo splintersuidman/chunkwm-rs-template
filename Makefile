@@ -20,6 +20,7 @@ install: clean $(BINS)
 clean:
 	rm -f $(OBJECT)
 	rm -f $(BINS)
+	mkdir -p $(BUILD_PATH)
 
 $(BUILD_PATH)/template.so: $(C_SRC) | $(BUILD_PATH)
 	$(RUST_BUILD) $(RUST_BUILD_FLAGS)
