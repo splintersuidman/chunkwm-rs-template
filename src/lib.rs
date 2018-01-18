@@ -7,10 +7,11 @@
 #[macro_use]
 extern crate chunkwm;
 
-use chunkwm::prelude::{CVar, Event, HandleEvent, Subscription, API};
+use chunkwm::prelude::{CVar, Event, HandleEvent, LogLevel, Subscription, API};
 
 // Create an event handler. Your handler should be `pub`.
 pub struct Plugin {
+    api: &'static API,
     preselect_border_width: CVar<u32>,
     global_desktop_mode: CVar<String>,
 }
@@ -26,6 +27,7 @@ impl HandleEvent for Plugin {
         let preselect_border_width = CVar::new("preselect_border_width", api).unwrap();
         let global_desktop_mode = CVar::new("global_desktop_mode", api).unwrap();
         Plugin {
+            api,
             preselect_border_width,
             global_desktop_mode,
         }
@@ -49,21 +51,41 @@ impl HandleEvent for Plugin {
                 // NOTE(splintah): the printed text is printed to ChunkWM's stdout. When installing
                 // via HomeBrew, you can use the options `--with-logging` or `--with-tmp-logging` to
                 // redirect the stdout to a file. You could also write to your own file or process.
-                println!(
-                    "Rust template: \"{} - {}\" focused",
-                    window.get_owner().get_name(), window.get_name()
+                self.api.log(
+                    LogLevel::Debug,
+                    format!(
+                        "Rust template: \"{} - {}\" focused",
+                        window.get_owner().get_name(),
+                        window.get_name()
+                    ),
                 );
             }
             Event::WindowMinimized(window) => {
-                println!(
-                    "Rust template: \"{} - {}\" minimized",
-                    window.get_owner().get_name(), window.get_name()
+                self.api.log(
+                    LogLevel::Debug,
+                    format!(
+                        "Rust template: \"{} - {}\" minimized",
+                        window.get_owner().get_name(),
+                        window.get_name()
+                    ),
                 );
             }
             Event::DaemonCommand(_) => {
                 // Print CVars on daemon command.
-                println!("{}", self.preselect_border_width.get_value().unwrap());
-                println!("{}", self.global_desktop_mode.get_value().unwrap());
+                self.api.log(
+                    LogLevel::Debug,
+                    format!("{}", self.preselect_border_width.get_value().unwrap()),
+                );
+                self.api.log(
+                    LogLevel::Debug,
+                    format!("{}", self.global_desktop_mode.get_value().unwrap()),
+                );
+
+                // You can log using the chunkwm logging system. Use the LoggingLevel to specify the
+                // output file; Debug: chunkwm.out.log, Warn and Error: chunkwm.err.log.
+                self.api.log(LogLevel::Debug, "DEBUG");
+                self.api.log(LogLevel::Warn, "WARN");
+                self.api.log(LogLevel::Error, "ERROR");
             }
             _ => (),
         }
