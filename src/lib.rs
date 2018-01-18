@@ -51,13 +51,13 @@ impl HandleEvent for Plugin {
                 // redirect the stdout to a file. You could also write to your own file or process.
                 println!(
                     "Rust template: \"{} - {}\" focused",
-                    window.owner.name, window.name
+                    window.get_owner().get_name(), window.get_name()
                 );
             }
             Event::WindowMinimized(window) => {
                 println!(
                     "Rust template: \"{} - {}\" minimized",
-                    window.owner.name, window.name
+                    window.get_owner().get_name(), window.get_name()
                 );
             }
             Event::DaemonCommand(_) => {
