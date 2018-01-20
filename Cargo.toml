@@ -9,4 +9,5 @@ path = "./src/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-chunkwm = { git = "https://github.com/splintah/chunkwm-rs" }
+# chunkwm = { git = "https://github.com/splintah/chunkwm-rs", features = ["border"] }
+chunkwm = { path = "../chunkwm-rs", features = ["accessibility"] }

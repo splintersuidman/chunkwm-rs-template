@@ -1,4 +1,4 @@
-# `chunkwm-rs` plugin template
+# `chunkwm-rs` plugin template [![Build Status](https://travis-ci.org/splintah/chunkwm-rs-template.svg?branch=master)](https://travis-ci.org/splintah/chunkwm-rs-template)
 A template for using [`chunkwm-rs`](https://github.com/splintah/chunkwm-rs).
 
 ## Usage
