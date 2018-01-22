@@ -1,9 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* #include "../../../api/plugin_api.h"
- * #include "../../../common/accessibility/application.h"
- * #include "../../../common/accessibility/window.h" */
 #include "../chunkwm/src/api/plugin_api.h"
 #include "../chunkwm/src/common/accessibility/application.h"
 #include "../chunkwm/src/common/accessibility/window.h"
@@ -104,8 +101,13 @@ PLUGIN_VOID_FUNC(PluginDeInit)
 CHUNKWM_PLUGIN_VTABLE(PluginInit, PluginDeInit, PluginMain)
 
 // NOTE(koekeishiya): Subscribe to ChunkWM events!
-chunkwm_plugin_export *Subscriptions = chunkwm_rust_subscribe_to_events();
-CHUNKWM_PLUGIN_SUBSCRIBE(Subscriptions)
+SubscriptionArray Subscriptions = chunkwm_rust_subscribe_to_events();
+void InitPluginSubscriptions(plugin *Plugin)
+{
+    fprintf(stderr, "Sub count: %d", Subscriptions.len);
+    Plugin->SubscriptionCount = Subscriptions.len;
+    Plugin->Subscriptions = Subscriptions.arr;
+}
 
 // NOTE(koekeishiya): Generate plugin
 CHUNKWM_PLUGIN(PluginName, PluginVersion);
