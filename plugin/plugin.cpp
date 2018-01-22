@@ -104,7 +104,6 @@ CHUNKWM_PLUGIN_VTABLE(PluginInit, PluginDeInit, PluginMain)
 SubscriptionArray Subscriptions = chunkwm_rust_subscribe_to_events();
 void InitPluginSubscriptions(plugin *Plugin)
 {
-    fprintf(stderr, "Sub count: %d", Subscriptions.len);
     Plugin->SubscriptionCount = Subscriptions.len;
     Plugin->Subscriptions = Subscriptions.arr;
 }
