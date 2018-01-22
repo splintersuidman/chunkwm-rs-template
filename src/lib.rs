@@ -7,7 +7,7 @@
 #[macro_use]
 extern crate chunkwm;
 
-use chunkwm::prelude::{CVar, Event, HandleEvent, LogLevel, NumericBool, Subscription, API};
+use chunkwm::prelude::{CVar, Event, HandleEvent, LogLevel, NumericBool, Subscription, API, ChunkWMError};
 
 // Create an event handler. Your handler should be `pub`.
 pub struct Plugin {
@@ -44,7 +44,7 @@ impl HandleEvent for Plugin {
     );
 
     // Handle events.
-    fn handle(&mut self, event: Event) {
+    fn handle(&mut self, event: Event) -> Result<(), ChunkWMError> {
         match event {
             Event::WindowFocused(window) => {
                 // NOTE(splintah): the printed text is printed to ChunkWM's stdout. When installing
@@ -54,8 +54,8 @@ impl HandleEvent for Plugin {
                     LogLevel::Debug,
                     format!(
                         "Rust template: \"{} - {}\" focused",
-                        window.get_owner().unwrap().get_name().unwrap(),
-                        window.get_name().unwrap()
+                        window.get_owner()?.get_name()?,
+                        window.get_name()?
                     ),
                 );
             }
@@ -64,8 +64,8 @@ impl HandleEvent for Plugin {
                     LogLevel::Debug,
                     format!(
                         "Rust template: \"{} - {}\" minimized",
-                        window.get_owner().unwrap().get_name().unwrap(),
-                        window.get_name().unwrap()
+                        window.get_owner()?.get_name()?,
+                        window.get_name()?
                     ),
                 );
             }
@@ -75,21 +75,21 @@ impl HandleEvent for Plugin {
                     LogLevel::Debug,
                     format!(
                         "Rust template: {}",
-                        self.preselect_border_width.get_value().unwrap()
+                        self.preselect_border_width.get_value()?
                     ),
                 );
                 self.api.log(
                     LogLevel::Debug,
                     format!(
                         "Rust template: {}",
-                        self.global_desktop_mode.get_value().unwrap()
+                        self.global_desktop_mode.get_value()?
                     ),
                 );
                 self.api.log(
                     LogLevel::Debug,
                     format!(
                         "Rust template: {}",
-                        self.bsp_spawn_left.get_value().unwrap().value
+                        self.bsp_spawn_left.get_value()?.value
                     ),
                 );
 
@@ -100,7 +100,9 @@ impl HandleEvent for Plugin {
                 self.api.log(LogLevel::Error, "Rust template: ERROR");
             }
             _ => (),
-        }
+        };
+
+        Ok(())
     }
 
     // Shutdown the handler.
