@@ -7,13 +7,14 @@
 #[macro_use]
 extern crate chunkwm;
 
-use chunkwm::prelude::{CVar, Event, HandleEvent, LogLevel, Subscription, API};
+use chunkwm::prelude::{CVar, Event, HandleEvent, LogLevel, NumericBool, Subscription, API};
 
 // Create an event handler. Your handler should be `pub`.
 pub struct Plugin {
     api: &'static API,
     preselect_border_width: CVar<u32>,
     global_desktop_mode: CVar<String>,
+    bsp_spawn_left: CVar<NumericBool>,
 }
 
 // Create the bridge between the C/C++ plugin and the event handler.
@@ -23,13 +24,11 @@ create_c_bridge!(Plugin);
 impl HandleEvent for Plugin {
     fn new(api: &'static API) -> Plugin {
         println!("Rust template: Starting up...");
-        // Add two CVars.
-        let preselect_border_width = CVar::new("preselect_border_width", api).unwrap();
-        let global_desktop_mode = CVar::new("global_desktop_mode", api).unwrap();
         Plugin {
             api,
-            preselect_border_width,
-            global_desktop_mode,
+            preselect_border_width: CVar::new("preselect_border_width", api).unwrap(),
+            global_desktop_mode: CVar::new("global_desktop_mode", api).unwrap(),
+            bsp_spawn_left: CVar::new("bsp_spawn_left", api).unwrap(),
         }
     }
 
@@ -55,8 +54,8 @@ impl HandleEvent for Plugin {
                     LogLevel::Debug,
                     format!(
                         "Rust template: \"{} - {}\" focused",
-                        window.get_owner().get_name(),
-                        window.get_name()
+                        window.get_owner().unwrap().get_name().unwrap(),
+                        window.get_name().unwrap()
                     ),
                 );
             }
@@ -65,32 +64,48 @@ impl HandleEvent for Plugin {
                     LogLevel::Debug,
                     format!(
                         "Rust template: \"{} - {}\" minimized",
-                        window.get_owner().get_name(),
-                        window.get_name()
+                        window.get_owner().unwrap().get_name().unwrap(),
+                        window.get_name().unwrap()
                     ),
                 );
             }
             Event::DaemonCommand(_) => {
-                // Print CVars on daemon command.
+                // Print CVars on daemon command (i.e. `chunkc template::command`).
                 self.api.log(
                     LogLevel::Debug,
-                    format!("{}", self.preselect_border_width.get_value().unwrap()),
+                    format!(
+                        "Rust template: {}",
+                        self.preselect_border_width.get_value().unwrap()
+                    ),
                 );
                 self.api.log(
                     LogLevel::Debug,
-                    format!("{}", self.global_desktop_mode.get_value().unwrap()),
+                    format!(
+                        "Rust template: {}",
+                        self.global_desktop_mode.get_value().unwrap()
+                    ),
+                );
+                self.api.log(
+                    LogLevel::Debug,
+                    format!(
+                        "Rust template: {}",
+                        self.bsp_spawn_left.get_value().unwrap().value
+                    ),
                 );
 
                 // You can log using the chunkwm logging system. Use the LoggingLevel to specify the
                 // output file; Debug: chunkwm.out.log, Warn and Error: chunkwm.err.log.
-                self.api.log(LogLevel::Debug, "DEBUG");
-                self.api.log(LogLevel::Warn, "WARN");
-                self.api.log(LogLevel::Error, "ERROR");
+                self.api.log(LogLevel::Debug, "Rust template: DEBUG");
+                self.api.log(LogLevel::Warn, "Rust template: WARN");
+                self.api.log(LogLevel::Error, "Rust template: ERROR");
             }
             _ => (),
         }
     }
 
     // Shutdown the handler.
-    fn shutdown(&self) {}
+    fn shutdown(&self) {
+        self.api
+            .log(LogLevel::Debug, "Rust template: shutting down.")
+    }
 }
