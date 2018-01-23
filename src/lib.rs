@@ -7,7 +7,8 @@
 #[macro_use]
 extern crate chunkwm;
 
-use chunkwm::prelude::{CVar, Event, HandleEvent, LogLevel, NumericBool, Subscription, API, ChunkWMError};
+use chunkwm::prelude::{CVar, ChunkWMError, Event, HandleEvent, LogLevel, NumericBool,
+                       Subscription, API};
 
 // Create an event handler. Your handler should be `pub`.
 pub struct Plugin {
@@ -80,17 +81,11 @@ impl HandleEvent for Plugin {
                 );
                 self.api.log(
                     LogLevel::Debug,
-                    format!(
-                        "Rust template: {}",
-                        self.global_desktop_mode.get_value()?
-                    ),
+                    format!("Rust template: {}", self.global_desktop_mode.get_value()?),
                 );
                 self.api.log(
                     LogLevel::Debug,
-                    format!(
-                        "Rust template: {}",
-                        self.bsp_spawn_left.get_value()?.value
-                    ),
+                    format!("Rust template: {}", self.bsp_spawn_left.get_value()?.value),
                 );
 
                 // You can log using the chunkwm logging system. Use the LoggingLevel to specify the
