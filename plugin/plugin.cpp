@@ -38,7 +38,7 @@ PLUGIN_MAIN_FUNC(PluginMain)
         StringsAreEqual(Node, "chunkwm_export_application_unhidden"))
     {
         macos_application *application = (macos_application *) Data;
-        chunkwm_rust_send_event_with_application(handler, Node, *application);
+        chunkwm_rust_send_event_with_application(handler, Node, application);
         return true;
     }
     else if (StringsAreEqual(Node, "chunkwm_export_window_created") ||
@@ -51,7 +51,7 @@ PLUGIN_MAIN_FUNC(PluginMain)
         StringsAreEqual(Node, "chunkwm_export_window_title_changed"))
     {
         macos_window *window = (macos_window *) Data;
-        chunkwm_rust_send_event_with_window(handler, Node, *window);
+        chunkwm_rust_send_event_with_window(handler, Node, window);
         return true;
     }
     else if (StringsAreEqual(Node, "chunkwm_export_display_added") ||
@@ -65,7 +65,7 @@ PLUGIN_MAIN_FUNC(PluginMain)
     else if (StringsAreEqual(Node, "chunkwm_daemon_command"))
     {
         chunkwm_payload *payload = (chunkwm_payload *) Data;
-        chunkwm_rust_send_event_with_daemon_command(handler, *payload);
+        chunkwm_rust_send_event_with_daemon_command(handler, payload);
     }
     else
     {
