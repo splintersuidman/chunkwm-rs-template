@@ -47,7 +47,8 @@ PLUGIN_MAIN_FUNC(PluginMain)
         StringsAreEqual(Node, "chunkwm_export_window_moved") ||
         StringsAreEqual(Node, "chunkwm_export_window_resized") ||
         StringsAreEqual(Node, "chunkwm_export_window_minimized") ||
-        StringsAreEqual(Node, "chunkwm_export_window_deminimized"))
+        StringsAreEqual(Node, "chunkwm_export_window_deminimized") ||
+        StringsAreEqual(Node, "chunkwm_export_window_title_changed"))
     {
         macos_window *window = (macos_window *) Data;
         chunkwm_rust_send_event_with_window(handler, Node, *window);
