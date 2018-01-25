@@ -30,49 +30,7 @@ StringsAreEqual(const char *A, const char *B)
  */
 PLUGIN_MAIN_FUNC(PluginMain)
 {
-    if (StringsAreEqual(Node, "chunkwm_export_application_launched") ||
-        StringsAreEqual(Node, "chunkwm_export_application_terminated") ||
-        StringsAreEqual(Node, "chunkwm_export_application_activated") ||
-        StringsAreEqual(Node, "chunkwm_export_application_deactivated") ||
-        StringsAreEqual(Node, "chunkwm_export_application_hidden") ||
-        StringsAreEqual(Node, "chunkwm_export_application_unhidden"))
-    {
-        macos_application *application = (macos_application *) Data;
-        chunkwm_rust_send_event_with_application(handler, Node, application);
-        return true;
-    }
-    else if (StringsAreEqual(Node, "chunkwm_export_window_created") ||
-        StringsAreEqual(Node, "chunkwm_export_window_destroyed") ||
-        StringsAreEqual(Node, "chunkwm_export_window_focused") ||
-        StringsAreEqual(Node, "chunkwm_export_window_moved") ||
-        StringsAreEqual(Node, "chunkwm_export_window_resized") ||
-        StringsAreEqual(Node, "chunkwm_export_window_minimized") ||
-        StringsAreEqual(Node, "chunkwm_export_window_deminimized") ||
-        StringsAreEqual(Node, "chunkwm_export_window_title_changed"))
-    {
-        macos_window *window = (macos_window *) Data;
-        chunkwm_rust_send_event_with_window(handler, Node, window);
-        return true;
-    }
-    else if (StringsAreEqual(Node, "chunkwm_export_display_added") ||
-        StringsAreEqual(Node, "chunkwm_export_display_removed") ||
-        StringsAreEqual(Node, "chunkwm_export_display_moved") ||
-        StringsAreEqual(Node, "chunkwm_export_display_resized"))
-    {
-        CGDirectDisplayID *display = (CGDirectDisplayID *) Data;
-        chunkwm_rust_send_event_with_display(handler, Node, *display);
-    }
-    else if (StringsAreEqual(Node, "chunkwm_daemon_command"))
-    {
-        chunkwm_payload *payload = (chunkwm_payload *) Data;
-        chunkwm_rust_send_event_with_daemon_command(handler, payload);
-    }
-    else
-    {
-        chunkwm_rust_send_event_with_nothing(handler, Node);
-    }
-
-    return false;
+    return chunkwm_rust_send_event(handler, Node, Data);
 }
 
 /*
