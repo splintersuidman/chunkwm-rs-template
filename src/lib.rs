@@ -55,8 +55,8 @@ impl HandleEvent for Plugin {
                     LogLevel::Debug,
                     format!(
                         "Rust template: \"{} - {}\" focused",
-                        window.get_owner()?.get_name()?,
-                        window.get_name()?
+                        window.owner()?.name()?,
+                        window.name()?
                     ),
                 );
             }
@@ -65,8 +65,8 @@ impl HandleEvent for Plugin {
                     LogLevel::Debug,
                     format!(
                         "Rust template: \"{} - {}\" minimized",
-                        window.get_owner()?.get_name()?,
-                        window.get_name()?
+                        window.owner()?.name()?,
+                        window.name()?
                     ),
                 );
             }
@@ -74,18 +74,15 @@ impl HandleEvent for Plugin {
                 // Print CVars on daemon command (i.e. `chunkc template::command`).
                 self.api.log(
                     LogLevel::Debug,
-                    format!(
-                        "Rust template: {}",
-                        self.preselect_border_width.get_value()?
-                    ),
+                    format!("Rust template: {}", self.preselect_border_width.value()?),
                 );
                 self.api.log(
                     LogLevel::Debug,
-                    format!("Rust template: {}", self.global_desktop_mode.get_value()?),
+                    format!("Rust template: {}", self.global_desktop_mode.value()?),
                 );
                 self.api.log(
                     LogLevel::Debug,
-                    format!("Rust template: {}", self.bsp_spawn_left.get_value()?.value),
+                    format!("Rust template: {}", self.bsp_spawn_left.value()?.value),
                 );
 
                 // You can log using the chunkwm logging system. Use the LoggingLevel to specify the
