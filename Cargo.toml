@@ -8,5 +8,7 @@ name = "template"
 path = "./src/lib.rs"
 crate-type = ["cdylib"]
 
-[dependencies]
-chunkwm = { git = "https://github.com/splintah/chunkwm-rs", features = ["accessibility"] }
+[dependencies.chunkwm]
+git = "https://github.com/splintah/chunkwm-rs"
+features = ["accessibility"]
+version = "~0.3.0"
