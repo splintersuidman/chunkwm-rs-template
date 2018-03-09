@@ -7,12 +7,6 @@
 
 extern "C" const char *chunkwm_rust_get_name(void);
 extern "C" const char *chunkwm_rust_get_version(void);
-
-// extern "C" bool chunkwm_plugin_main(const char *Node, void *Data);
-// extern "C" bool chunkwm_plugin_init(chunkwm_api ChunkwmAPI);
-// extern "C" void chunkwm_plugin_deinit(void);
-// extern "C" void init_plugin_vtable(plugin *Plugin);
-// extern "C" void init_plugin_subscriptions(plugin *Plugin);
 extern "C" plugin *get_plugin();
 
 #define internal static
