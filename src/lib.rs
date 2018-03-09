@@ -4,26 +4,27 @@
 // To see the installation instructions, visit the
 // [README on GitHub](https://github.com/splintah/chunkwm-rs-template).
 
-#[macro_use]
-extern crate chunkwm;
+#[macro_use] extern crate chunkwm;
+// The bridge module defines the create_bridge!($struct) macro.
+#[macro_use] mod bridge;
 
 use chunkwm::prelude::{CVar, ChunkWMError, Event, HandleEvent, LogLevel, NumericBool,
                        Subscription, API};
 
 // Create an event handler. Your handler should be `pub`.
 pub struct Plugin {
-    api: &'static API,
+    api: API,
     preselect_border_width: CVar<u32>,
     global_desktop_mode: CVar<String>,
     bsp_spawn_left: CVar<NumericBool>,
 }
 
 // Create the bridge between the C/C++ plugin and the event handler.
-create_c_bridge!(Plugin);
+create_bridge!(Plugin);
 
 // Implement `HandleEvent` on the event handler.
 impl HandleEvent for Plugin {
-    fn new(api: &'static API) -> Plugin {
+    fn new(api: API) -> Plugin {
         println!("Rust template: Starting up...");
         Plugin {
             api,
@@ -48,9 +49,10 @@ impl HandleEvent for Plugin {
     fn handle(&mut self, event: Event) -> Result<(), ChunkWMError> {
         match event {
             Event::WindowFocused(window) => {
-                // NOTE(splintah): the printed text is printed to ChunkWM's stdout. When installing
-                // via HomeBrew, you can use the options `--with-logging` or `--with-tmp-logging` to
-                // redirect the stdout to a file. You could also write to your own file or process.
+                // NOTE(splintah): the printed text is printed to ChunkWM's stdout. You can use
+                // `chunkc core::log_level <debug | warn | error>` to specify the desired log level,
+                // and `chunkc core::log_file <stdout | stderr | /path/to/file>` for the desired log
+                // file.
                 self.api.log(
                     LogLevel::Debug,
                     format!(
