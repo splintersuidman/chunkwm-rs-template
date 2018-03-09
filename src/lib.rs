@@ -4,9 +4,10 @@
 // To see the installation instructions, visit the
 // [README on GitHub](https://github.com/splintah/chunkwm-rs-template).
 
-#[macro_use] extern crate chunkwm;
-// The bridge module defines the create_bridge!($struct) macro.
-#[macro_use] mod bridge;
+#[macro_use]
+extern crate chunkwm;
+#[macro_use]
+mod bridge;
 
 use chunkwm::prelude::{CVar, ChunkWMError, Event, HandleEvent, LogLevel, NumericBool,
                        Subscription, API};
@@ -20,7 +21,13 @@ pub struct Plugin {
 }
 
 // Create the bridge between the C/C++ plugin and the event handler.
-create_bridge!(Plugin);
+// The string values should be bytes (i.e. b""), and should be null-terminated (i.e. end in '\0').
+chunkwm_plugin!(
+    Plugin,
+    file: b"chunkwm-rs-template/src/lib.rs\0",
+    name: b"rust_template\0",
+    version: b"0.1.0\0"
+);
 
 // Implement `HandleEvent` on the event handler.
 impl HandleEvent for Plugin {
@@ -33,10 +40,6 @@ impl HandleEvent for Plugin {
             bsp_spawn_left: CVar::new("bsp_spawn_left", api).unwrap(),
         }
     }
-
-    // Specify name and version.
-    name!("rust_template");
-    version!("0.1.0");
 
     // Subscribe to events.
     subscribe!(

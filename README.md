@@ -10,3 +10,5 @@ A template for using [`chunkwm-rs`](https://github.com/splintah/chunkwm-rs).
 - Run `chunkc core::load template.so`.
 
 To change the plugin, edit `src/lib.rs`.
+
+When using a different name than `template`, change all occurrences of `template` in the `Makfile` to the new name, and make sure the name is changed in `Cargo.toml`.

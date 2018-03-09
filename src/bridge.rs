@@ -1,26 +1,19 @@
 #[macro_export]
-macro_rules! create_bridge {
-    ($struct_ident:ident) => {pub mod __export {
+macro_rules! chunkwm_plugin {
+    (
+        $struct_ident:ident,
+        file: $file_name:expr,
+        name: $plugin_name:expr,
+        version: $plugin_version:expr
+    ) => {pub mod __export {
         extern crate chunkwm;
         use super::$struct_ident;
         use chunkwm::prelude::*;
-        use chunkwm::raw::ChunkWMPlugin;
+        use chunkwm::raw::{ChunkWMPlugin, ChunkWMPluginDetails};
         use std::os::raw::{c_char, c_uint, c_void};
         use std::ffi;
 
         static mut PLUGIN: Option<$struct_ident> = None;
-
-        #[no_mangle]
-        pub extern "C" fn chunkwm_rust_get_name() -> *const c_char {
-            ffi::CString::new($struct_ident::name()).unwrap().into_raw()
-        }
-
-        #[no_mangle]
-        pub unsafe extern "C" fn chunkwm_rust_get_version() -> *const c_char {
-            ffi::CString::new($struct_ident::version())
-                .unwrap()
-                .into_raw()
-        }
 
         pub extern "C" fn chunkwm_plugin_main(node: *const c_char, data: *mut c_void) -> bool {
             use chunkwm::event::DisplayID;
@@ -128,7 +121,7 @@ macro_rules! create_bridge {
         }
 
         #[no_mangle]
-        pub unsafe extern "C" fn get_plugin() -> *mut ChunkWMPlugin {
+        pub extern "C" fn GetPlugin() -> *mut ChunkWMPlugin {
             use std::sync::{Once, ONCE_INIT};
             static INIT: Once = ONCE_INIT;
 
@@ -150,12 +143,24 @@ macro_rules! create_bridge {
                 }
             };
 
-            INIT.call_once(|| {
-                chunkwm_init_plugin_vtable(&mut SINGLETON);
-                chunkwm_init_plugin_subscriptions(&mut SINGLETON);
-            });
+            unsafe {
+                INIT.call_once(|| {
+                    chunkwm_init_plugin_vtable(&mut SINGLETON);
+                    chunkwm_init_plugin_subscriptions(&mut SINGLETON);
+                });
 
-            &mut SINGLETON
+                &mut SINGLETON
+            }
         }
+
+        #[allow(non_upper_case_globals)]
+        #[no_mangle]
+        pub static Exports: ChunkWMPluginDetails = ChunkWMPluginDetails {
+            api_version: 6,
+            file_name: $file_name as *const u8,
+            plugin_name: $plugin_name as *const u8,
+            plugin_version: $plugin_version as *const u8,
+            initialize: GetPlugin,
+        };
     }};
 }
