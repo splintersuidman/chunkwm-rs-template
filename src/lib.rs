@@ -6,8 +6,6 @@
 
 #[macro_use]
 extern crate chunkwm;
-#[macro_use]
-mod bridge;
 
 use chunkwm::prelude::{CVar, ChunkWMError, Event, HandleEvent, LogLevel, NumericBool,
                        Subscription, API};
@@ -22,12 +20,12 @@ pub struct Plugin {
 
 // Create the bridge between the C/C++ plugin and the event handler.
 // The string values should be bytes (i.e. b""), and should be null-terminated (i.e. end in '\0').
-chunkwm_plugin!(
+chunkwm_plugin!{
     Plugin,
     file: b"chunkwm-rs-template/src/lib.rs\0",
     name: b"rust_template\0",
     version: b"0.1.0\0"
-);
+}
 
 // Implement `HandleEvent` on the event handler.
 impl HandleEvent for Plugin {
