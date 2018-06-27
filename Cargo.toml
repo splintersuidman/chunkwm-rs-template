@@ -11,4 +11,4 @@ crate-type = ["cdylib"]
 [dependencies.chunkwm]
 git = "https://github.com/splintah/chunkwm-rs"
 features = ["accessibility"]
-version = "0.4.2"
+version = "0.4.3"
