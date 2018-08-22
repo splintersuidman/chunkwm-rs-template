@@ -88,9 +88,13 @@ impl HandleEvent for Plugin {
                     format!("Rust template: {}", self.bsp_spawn_left.value()?.value),
                 );
 
-                // You can log using the chunkwm logging system. Use the LoggingLevel to specify the
-                // output file; Debug: chunkwm.out.log, Warn and Error: chunkwm.err.log.
+                // You can log using the chunkwm logging system. The log levels are:
+                // - Debug;
+                // - Profile;
+                // - Warn;
+                // - and Error.
                 self.api.log(LogLevel::Debug, "Rust template: DEBUG");
+                self.api.log(LogLevel::Profile, "Rust template: PROFILE");
                 self.api.log(LogLevel::Warn, "Rust template: WARN");
                 self.api.log(LogLevel::Error, "Rust template: ERROR");
             }
